@@ -2,7 +2,6 @@ public without sharing class OrderSelector {
 
     public static Map<Id, Decimal> getActivatedOrdersSumByAccount(Set<Id> accountIds) {
         Map<Id, Decimal> caMap = new Map<Id, Decimal>();
-
         for (AggregateResult ar : [
             SELECT AccountId accId, SUM(TotalAmount) total
             FROM Order
@@ -11,7 +10,6 @@ public without sharing class OrderSelector {
         ]) {
             caMap.put((Id) ar.get('accId'), (Decimal) ar.get('total'));
         }
-
         return caMap;
     }
 
