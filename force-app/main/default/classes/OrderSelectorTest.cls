@@ -9,7 +9,6 @@ public class OrderSelectorTest {
         // Activer l’ordre
         ord.Status = 'Activated';
         update ord;
-
         // 2. Exécuter la méthode
         Test.startTest();
         Map<Id, Decimal> result = OrderSelector.getActivatedOrdersSumByAccount(new Set<Id>{acc.Id});
