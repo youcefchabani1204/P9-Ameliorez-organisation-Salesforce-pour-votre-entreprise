@@ -9,7 +9,6 @@ export default class OrderSummaryLwc extends LightningElement {
     connectedCallback() {
         this.fetchSumOrders();
     }
-
     fetchSumOrders() {
         getSumOrdersByAccount({ accountId: this.recordId })
             .then(result => {
