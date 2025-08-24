@@ -1,0 +1,27 @@
+name: ⚙️ Deploy and Validate Metadata
+
+on:
+  push:
+    branches:
+      - main
+      - DEV
+
+jobs:
+  sfdx-deploy:
+    name: "Deploy to Sandbox"
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [18.x]
+
+    steps:
+      - name: 📥 Récupération du code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: 🧰 Installation de Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
