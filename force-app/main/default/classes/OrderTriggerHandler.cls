@@ -9,7 +9,7 @@ public without sharing class OrderTriggerHandler {
             }
         }
     }
-
+// je fais un autre test
     public static void updateAccountCA(List<Order> newOrders, Map<Id, Order> oldMap) {
         Set<Id> accountIds = new Set<Id>();
 
