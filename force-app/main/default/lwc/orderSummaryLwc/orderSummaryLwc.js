@@ -5,7 +5,6 @@ export default class OrderSummaryLwc extends LightningElement {
     @api recordId;
     @track sumOrdersOfCurrentAccount = 0;
     @track hasError = false;
-
     connectedCallback() {
         this.fetchSumOrders();
     }
@@ -17,6 +16,6 @@ export default class OrderSummaryLwc extends LightningElement {
             })
             .catch(() => {
                 this.hasError = true;
-            });
+   });
     }
 }
