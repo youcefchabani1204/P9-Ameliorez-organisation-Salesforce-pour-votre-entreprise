@@ -1,51 +1,24 @@
-name: Deploy and Validate Metadata
+name: Simple Deploy to Salesforce
 
 on:
-  pull_request:
-    branches:
-      - main
-
   push:
     branches:
       - main
 
 jobs:
-  sfdxvalidate:
-    name: "Run SFDX Validate"
+  deploy:
     runs-on: ubuntu-latest
-
-    strategy:
-      matrix:
-        node-version: [18.x]
 
     steps:
       - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0 
 
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v4
-        with:
-          node-version: ${{ matrix.node-version }}
+      - name: Install SFDX CLI
+        run: npm install -g @salesforce/cli@latest
 
-      - name: Install SFDX CLI and sfdx-git-delta plugin
-        run: |
-          npm install -g @salesforce/cli@latest
-          echo "y" | npm install sfdx-git-delta@3.3.0 -g
-
-      - name: "Authentification Salesforce"
+      - name: Authenticate to Salesforce
         run: |
           echo "${{ secrets.SF_AUTH_URL }}" > ./auth.txt
           sf org login sfdx-url -f ./auth.txt -a deployOrg --set-default
-          sf org display -o deployOrg
-          
-      - name: "Generate metadata delta pull request"
-        run: |
-          mkdir ./.temp
-          sgd --to "HEAD" --from "origin/main" --output ./.temp
-          cat ./.temp/package/package.xml
 
-      - name: "Déployer les métadonnées sur la branche main"
-        if: github.ref == 'refs/heads/main'
-        run: |
-          sf project deploy start -x ./.temp/package/package.xml -o deployOrg --ignore-conflicts
+      - name: Deploy to Salesforce
+        run: sf project deploy start --metadata-dir force-app/main/default --target-org deployOrg --ignore-conflicts
