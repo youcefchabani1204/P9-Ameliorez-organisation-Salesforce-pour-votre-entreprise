@@ -1,14 +1,17 @@
-name: ⚙️ Deploy and Validate Metadata
+name: Deploy and Validate Metadata
 
 on:
+  pull_request:
+    branches:
+      - main
+
   push:
     branches:
       - main
-      - DEV
 
 jobs:
-  sfdx-deploy:
-    name: "Deploy to Sandbox"
+  sfdxvalidate:
+    name: "Run SFDX Validate"
     runs-on: ubuntu-latest
 
     strategy:
@@ -16,12 +19,34 @@ jobs:
         node-version: [18.x]
 
     steps:
-      - name: 📥 Récupération du code
-        uses: actions/checkout@v4
+      # 1. Récupère ton code source depuis GitHub
+      - uses: actions/checkout@v4
         with:
-          fetch-depth: 0
+          fetch-depth: 0 
 
-      - name: 🧰 Installation de Node.js
+      # 2. Configure Node.js (obligatoire pour SFDX CLI)
+      - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
+
+      # 3. Installe Salesforce CLI et plugin git-delta
+      - name: Install SFDX CLI and sfdx-git-delta plugin
+        run: |
+          npm install -g @salesforce/cli@latest
+          echo "y" | npm install sfdx-git-delta@3.3.0 -g
+
+      # 4. Authentification avec Salesforce (via secret GitHub)
+      - name: Authentification Salesforce
+        run: echo $SF_AUTH_URL > sfdx-url.txt && sf org login sfdx-url -f sfdx-url.txt -a deployOrg
+        env:
+          SF_AUTH_URL: ${{ secrets.SF_AUTH_URL }}
+
+      # 5. Générer le delta (les fichiers modifiés seulement)
+      - name: Generate metadata delta pull request
+        run: sfdx sgd:source:delta --to HEAD --from HEAD^ --output ./.temp
+
+      # 6. Déployer uniquement si on est sur la branche main
+      - name: Deploy metadata to Salesforce
+        if: github.ref == 'refs/heads/main'
+        run: sf project deploy start -x ./.temp/package/package.xml -o deployOrg -l RunLocalTests

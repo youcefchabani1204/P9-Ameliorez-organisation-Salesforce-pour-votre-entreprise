@@ -1,44 +1,24 @@
-name: Deploy and Validate Metadata
+name: Simple Deploy to Salesforce
 
 on:
-  pull_request:
-    branches:
-      - main
-
   push:
     branches:
       - main
 
 jobs:
-  sfdxvalidate:
-    name: "Run SFDX Validate"
+  deploy:
     runs-on: ubuntu-latest
-
-    strategy:
-      matrix:
-        node-version: [18.x]
 
     steps:
       - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0 
 
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v4
-        with:
-          node-version: ${{ matrix.node-version }}
+      - name: Install SFDX CLI
+        run: npm install -g @salesforce/cli@latest
 
-      - name: Install SFDX CLI and sfdx-git-delta plugin # Ce package va vous permettre de faire un delta entre votre branche et la branch ciblé. Voici la documentation : https://github.com/scolladon/sfdx-git-delta
+      - name: Authenticate to Salesforce
         run: |
-          npm install -g @salesforce/cli@latest
-          echo "y" | npm install sfdx-git-delta@3.3.0 -g
+          echo "${{ secrets.SF_AUTH_URL }}" > ./auth.txt
+          sf org login sfdx-url -f ./auth.txt -a deployOrg --set-default
 
-      - name: 'Authentification Salesforce' # Vous devez avoir une connexion avec Salesforce pour pouvoir deployer le code à la dernière étape.
-        run:  # A faire
-
-      - name: 'Generate metadata delta pull request'  # Utilisez le plug-in sfdx-git-delta pour effectuer un delta, generer le package xml dans un fichier temporaire ex : .temp
-        run:  # A faire
-
-      - name: 'Déployer les métadonnées sur la branch main'
-        if: github.ref == 'refs/heads/main'
-        run:  # A faire déployer le code venant du fichier package.xml généré précédemment 
+      - name: Deploy to Salesforce
+        run: sf project deploy start --metadata-dir force-app/main/default --target-org deployOrg --ignore-conflicts
