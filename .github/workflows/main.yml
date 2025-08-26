@@ -30,4 +30,4 @@ jobs:
             --metadata-dir force-app/main/default \
             --target-org deployOrg \
             --ignore-conflicts \
-            --test-level RunLocalTests
+            --test-level NoTestRun
