@@ -1,5 +1,5 @@
 public without sharing class OrderSelector {
-
+// test 
     public static Map<Id, Decimal> getActivatedOrdersSumByAccount(Set<Id> accountIds) {
         Map<Id, Decimal> caMap = new Map<Id, Decimal>();
         for (AggregateResult ar : [
