@@ -12,7 +12,7 @@ public without sharing class OrderSelector {
         }
         return caMap;
     }
-// hello there
+
     @AuraEnabled
     public static Decimal getSumOrdersByAccount(Id accountId) {
         AggregateResult ar = [
