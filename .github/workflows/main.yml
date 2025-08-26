@@ -10,24 +10,19 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # 1. Récupérer le code de la branche
+      # 1. Récupérer le code
       - uses: actions/checkout@v4
 
-      # 2. Installer la CLI Salesforce
-      - name: Install SFDX CLI
-      - run: npm install -g @salesforce/cli@64.12.0
+      # 2. Installer la CLI Salesforce (via action stable)
+      - name: Install Salesforce CLI
+        uses: amtrack/sfdx-action@v1
 
-      # 3. Authentifier l'org avec ton secret SF_AUTH_URL
+      # 3. Authentifier Salesforce avec ton secret
       - name: Authenticate to Salesforce
         run: |
           echo "${{ secrets.SF_AUTH_URL }}" > ./auth.txt
           sf org login sfdx-url -f ./auth.txt -a deployOrg --set-default
 
-      # 4. Déployer tout le code + exécuter les tests
-      - name: Deploy to Salesforce with Tests
-        run: |
-          sf project deploy start \
-            --metadata-dir force-app/main/default \
-            --target-org deployOrg \
-            --ignore-conflicts \
-            --test-level NoTestRun
+      # 4. Déployer tout le projet (avec package.xml dans manifest)
+      - name: Deploy to Salesforce
+        run: sf project deploy start --manifest manifest/package.xml --target-org deployOrg --ignore-conflicts --wait 10
