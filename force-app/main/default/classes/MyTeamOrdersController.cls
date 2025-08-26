@@ -3,4 +3,5 @@ public without sharing class MyTeamOrdersController {
     public static Decimal getSumOrdersByAccount(Id accountId) {
         return OrderService.getAccountCA(accountId);
     }
+
 }
