@@ -1,30 +1,32 @@
-name: Simple Deploy to Salesforce
+name: Deploy and Test to Salesforce
 
 on:
   push:
     branches:
       - main
 
-
 jobs:
   deploy:
     runs-on: ubuntu-latest
 
     steps:
-      # 1. Récupérer le code de la branche
+      # 1. Récupérer le code
       - uses: actions/checkout@v4
 
-      # 2. Installer la CLI Salesforce
-      - name: Install SFDX CLI
-        run: npm install -g @salesforce/cli@latest
+      # 2. Installer la CLI Salesforce officielle
+      - name: Install Salesforce CLI
+        uses: salesforcecli/github-action@v2
 
-      # 3. Authentifier l'org avec ton secret SF_AUTH_URL
+      # 3. Authentifier Salesforce avec ton secret
       - name: Authenticate to Salesforce
         run: |
           echo "${{ secrets.SF_AUTH_URL }}" > ./auth.txt
           sf org login sfdx-url -f ./auth.txt -a deployOrg --set-default
 
-      # 4. Déployer tout le code
+      # 4. Déployer le projet
       - name: Deploy to Salesforce
-        run: |
-          sf project deploy start --metadata-dir force-app/main/default --target-org deployOrg --ignore-conflicts
+        run: sf project deploy start --manifest manifest/package.xml --target-org deployOrg --ignore-conflicts --wait 10
+
+      # 5. Lancer les tests unitaires Apex
+      - name: Run Apex Tests
+        run: sf apex run test --target-org deployOrg --result-format human --wait 10
