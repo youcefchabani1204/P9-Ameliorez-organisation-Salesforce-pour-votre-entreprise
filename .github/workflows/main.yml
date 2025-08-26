@@ -15,7 +15,7 @@ jobs:
 
       # 2. Installer la CLI Salesforce
       - name: Install SFDX CLI
-        run: npm install -g @salesforce/cli@latest
+      - run: npm install -g @salesforce/cli@64.12.0
 
       # 3. Authentifier l'org avec ton secret SF_AUTH_URL
       - name: Authenticate to Salesforce
