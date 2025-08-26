@@ -5,7 +5,6 @@ on:
     branches:
       - main
 
-
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -24,7 +23,11 @@ jobs:
           echo "${{ secrets.SF_AUTH_URL }}" > ./auth.txt
           sf org login sfdx-url -f ./auth.txt -a deployOrg --set-default
 
-      # 4. Déployer tout le code
-      - name: Deploy to Salesforce
+      # 4. Déployer tout le code + exécuter les tests
+      - name: Deploy to Salesforce with Tests
         run: |
-          sf project deploy start --metadata-dir force-app/main/default --target-org deployOrg --ignore-conflicts
+          sf project deploy start \
+            --metadata-dir force-app/main/default \
+            --target-org deployOrg \
+            --ignore-conflicts \
+            --test-level RunLocalTests
