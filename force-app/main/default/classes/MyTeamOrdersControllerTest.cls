@@ -25,6 +25,6 @@ public class MyTeamOrdersControllerTest {
         System.assertEquals(600, result, 
             'Le total retourné doit être égal au TotalAmount de la commande activée');
     }
-    // test  4
+    // test  4 5
 }
 
