@@ -13,9 +13,9 @@ jobs:
       # 1. Récupérer le code
       - uses: actions/checkout@v4
 
-      # 2. Installer la CLI Salesforce (via action stable)
+      # 2. Installer la CLI Salesforce officielle
       - name: Install Salesforce CLI
-        uses: amtrack/sfdx-action@v1
+        uses: salesforcecli/github-action@v2
 
       # 3. Authentifier Salesforce avec ton secret
       - name: Authenticate to Salesforce
@@ -23,6 +23,6 @@ jobs:
           echo "${{ secrets.SF_AUTH_URL }}" > ./auth.txt
           sf org login sfdx-url -f ./auth.txt -a deployOrg --set-default
 
-      # 4. Déployer tout le projet (avec package.xml dans manifest)
+      # 4. Déployer tout le projet (basé sur manifest/package.xml)
       - name: Deploy to Salesforce
         run: sf project deploy start --manifest manifest/package.xml --target-org deployOrg --ignore-conflicts --wait 10
