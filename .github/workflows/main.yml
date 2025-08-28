@@ -26,11 +26,7 @@ jobs:
           # 5. Lancer les tests unitaires Apex
 
 
-
-      - name: Run Apex Tests
-        run: sf apex run test --target-org deployOrg --result-format human --wait 10
-
       # 4. Déployer tout le code
       - name: Deploy to Salesforce
         run: |
-          sf project deploy start --metadata-dir force-app/main/default --target-org deployOrg --ignore-conflicts
+          sf project deploy start --metadata-dir force-app/main/default --target-org deployOrg --ignore-conflicts --test-level RunLocalTests 
