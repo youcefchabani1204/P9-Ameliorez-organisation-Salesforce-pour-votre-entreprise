@@ -3,7 +3,7 @@
 ### 1. Introduction
  L’entreprise Fasha utilise Salesforce pour gérer ses ventes et ses clients.
  - Cependant, plusieurs problèmes de performance et de fiabilité avaient été identifiés :
-     - Le déclencheur UpdateAccountCA bloquait lorsque des comptes dépassaient 100 commandes.
+    - Le déclencheur UpdateAccountCA bloquait lorsque des comptes dépassaient 100 commandes.
     - Le champ NetAmount__c ne s’actualisait pas correctement.
     - Un composant Lightning Web Component (LWC) ne calculait pas correctement le montant total des commandes.
     - L’absence de CI/CD ralentissait la livraison des correctifs.
