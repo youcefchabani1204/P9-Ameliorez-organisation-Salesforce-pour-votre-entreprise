@@ -1,6 +1,6 @@
 # Projet 9: Améliorez une organisation Salesforce pour votre entreprise
 
-### 1. Introduction␣␣
+### 1. Introduction
  L’entreprise Fasha utilise Salesforce pour gérer ses ventes et ses clients.
  Cependant, plusieurs problèmes de performance et de fiabilité avaient été identifiés :
     • Le déclencheur UpdateAccountCA bloquait lorsque des comptes dépassaient 100 commandes.
@@ -14,7 +14,7 @@ Cette documentation décrit les changements techniques réalisés, les tests ass
      UpdateAccountsCABatch : passage du traitement en déclencheur simple à un batch Apex capable de gérer des volumes supérieurs à 100 enregistrements.
      OrderTriggerHandler : restructuration du code pour séparer la logique métier et la rendre plus maintenable.
      TestDataFactory : ajout d’une classe de génération de données pour simplifier les tests unitaires
-### 2.2 Lightning Web Component␣␣
+### 2.2 Lightning Web Component
       Correction de l’import dans orderSummaryLwc (createElement → API correcte).
       Optimisation de la récupération des données avec @wire sur Apex.
       Ajout d’un affichage clair du montant total des commandes.
