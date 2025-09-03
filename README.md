@@ -41,7 +41,7 @@
     - Éviter les erreurs manuelles et garantir la stabilité du code.
 ### 4.2 Fichier de configuration
 Extrait du workflow .github/workflows/deploy.yml :
-### 5. Conclusion
+### 5. Conclusion 
 Grâce à cette refactorisation et à la mise en place du pipeline CI/CD :
     - Le code est désormais plus maintenable et robuste.
     - Les tests unitaires garantissent la qualité et la couverture.
