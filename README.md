@@ -46,4 +46,4 @@ Grâce à cette refactorisation et à la mise en place du pipeline CI/CD :
     • Le code est désormais plus maintenable et robuste.
     • Les tests unitaires garantissent la qualité et la couverture.
     • Le pipeline assure une livraison continue et fiable.␣␣
-    • Les utilisateurs finaux bénéficient d’une application plus rapide et fonctionnelle.␣␣
+    • Les utilisateurs finaux bénéficient d’une application plus rapide et fonctionnelle.
